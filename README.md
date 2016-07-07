@@ -10,5 +10,6 @@ Add basic function.
 * **role.repairer.js**: role-function of repairer, used to repair roads and strength walls
 * **role.upgrader.js**: role-function of upgrader, used to upgrade control-center
 
-
-
+###V1.0.1
+* Harvest the source with more energy.
+* Adjust code structure.
