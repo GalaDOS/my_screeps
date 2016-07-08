@@ -11,5 +11,9 @@ Add basic function.
 * **role.upgrader.js**: role-function of upgrader, used to upgrade control-center
 
 ###V1.0.1
-* Harvest the source with more energy.
+* Harvest the source which has more energy.
 * Adjust code structure.
+
+###V1.0.2
+* Harvest source from neighbor room.
+

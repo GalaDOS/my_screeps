@@ -1,15 +1,6 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('role.repairer');
- * mod.thing == 'a thing'; // true
- */
-
 var roleRepairer = {
-    
     run: function(creep) {
+        /* decide working condition and source number */
 	    if(creep.memory.working && creep.carry.energy == 0) {
             creep.memory.working = false;
 			var sources = creep.room.find(FIND_SOURCES);

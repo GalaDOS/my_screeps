@@ -16,7 +16,7 @@ module.exports.loop = function () {
 
     /* maintain number of creeps */
     var creeps = _.filter(Game.creeps, (c) => true);
-    if(creeps.length < 10){
+    if(creeps.length < 12){
         mainFunction.maintainCreeps();
     }
 
@@ -34,6 +34,9 @@ module.exports.loop = function () {
         }
         else if(creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
+        }
+        else if(creep.memory.role == 'harvester_neighbor') {
+            roleHarvester.run_neighbor(creep);
         }
     }
 }
