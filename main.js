@@ -2,7 +2,9 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
+var roletransfer = require('role.transfer');
 var mainFunction = require('mainFunction');
+var battleDefend = require('battle.defend');
 
 module.exports.loop = function () {
 
@@ -16,11 +18,11 @@ module.exports.loop = function () {
 
     /* maintain number of creeps */
     var creeps = _.filter(Game.creeps, (c) => true);
-    if(creeps.length < 12){
+    if(creeps.length < 13 || Game.rooms["E32S46"].memory.underAttack){
         mainFunction.maintainCreeps();
     }
 
-    /* run their functions */
+    /* run creeps' functions */
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
@@ -35,8 +37,14 @@ module.exports.loop = function () {
         else if(creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
         }
+        else if(creep.memory.role == 'transfer') {
+            roletransfer.run(creep);
+        }
         else if(creep.memory.role == 'harvester_neighbor') {
             roleHarvester.run_neighbor(creep);
         }
     }
+
+    /* protect room */
+    battleDefend.checkEnemy(Game.rooms["E32S46"]); 
 }

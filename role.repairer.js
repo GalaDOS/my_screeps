@@ -3,10 +3,6 @@ var roleRepairer = {
         /* decide working condition and source number */
 	    if(creep.memory.working && creep.carry.energy == 0) {
             creep.memory.working = false;
-			var sources = creep.room.find(FIND_SOURCES);
-            if(sources.length > 1) {
-                creep.memory.sourceNum = sources[0].energy > sources[1].energy ? 0 : 1;
-            }
 	    }
 	    if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.working = true;
@@ -15,8 +11,7 @@ var roleRepairer = {
 	    if(creep.memory.working) {
 	        var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL)
-							||(structure.hits < 200000 && structure.structureType == STRUCTURE_WALL);
+                    return structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART && structure.hits < structure.hitsMax*0.8;
                 }
             });
             if(targets.length) {
@@ -24,15 +19,26 @@ var roleRepairer = {
                     creep.moveTo(targets[0]);
                 }
             }
-			else{
-				creep.moveTo(Game.spawns.Spawn1);
-			}
-	    } 
+            else{
+                var targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.hits < 50000 && structure.structureType == STRUCTURE_WALL) || 
+                                (structure.hits < 500000 && structure.structureType == STRUCTURE_RAMPART);
+                    }
+                });
+                if(targets.length) {
+                    if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], {reusePath: 5});
+                    }
+                }             
+            } 
+        }
 		else {
-	        var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[creep.memory.sourceNum]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[creep.memory.sourceNum]);
-            }
+	        if(creep.room.storage.store[RESOURCE_ENERGY] >= 500) {
+            	if(creep.room.storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.storage, {reusePath: 10});
+                }
+			}
 	    }
 	}
 };

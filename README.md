@@ -1,6 +1,6 @@
 # my_screeps
-###V1.0
-Add basic function.
+###V1.0.0
+Add basic function:
 * **main.js**:
  1. remove dead creeps' memory
  2. maintain number of creeps
@@ -17,3 +17,6 @@ Add basic function.
 ###V1.0.2
 * Harvest source from neighbor room.
 
+###V1.1.0
+* **New source distribution method**: RCL-4 will unlock the storage-structure, it allows me to use more effective source distribution method
+* **Add basic defend (Tower)**: since I harvest source from neighbor room, random invader npc will attack my creeps
