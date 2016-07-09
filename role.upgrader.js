@@ -1,14 +1,14 @@
 var roleUpgrader = {
     run: function(creep) {
         /* decide working condition and source number */
-	    if(creep.memory.working && creep.carry.energy == 0) {
+        if(creep.memory.working && creep.carry.energy == 0) {
             creep.memory.working = false;
-	    }
-	    if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
-	        creep.memory.working = true;
-	    }
+        }
+        if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
+            creep.memory.working = true;
+        }
         
-	    if(creep.memory.working) {
+        if(creep.memory.working) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller, {reusePath: 10});
             }
@@ -24,12 +24,12 @@ var roleUpgrader = {
             }
 
             if(creep.room.storage.store[RESOURCE_ENERGY] >= 500) {
-            	if(creep.room.storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                if(creep.room.storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.storage, {reusePath: 10});
                 }
-			}
+            }
         }
-	}
+    }
 };
 
 module.exports = roleUpgrader;

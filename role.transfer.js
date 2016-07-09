@@ -1,22 +1,14 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('role.transfer');
- * mod.thing == 'a thing'; // true
- */
 var roleTransfer = {
     run: function(creep) {
         /* decide working condition and source number */
-	    if(creep.memory.working && creep.carry.energy == 0) {
+        if(creep.memory.working && creep.carry.energy == 0) {
             creep.memory.working = false;
-	    }
-	    if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
-	        creep.memory.working = true;
-	    }
+        }
+        if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
+            creep.memory.working = true;
+        }
 
-	    if(creep.memory.working) {
+        if(creep.memory.working) {
             /* filling the tower on the premise of full-speed developing */
             if(creep.room.energyAvailable >= 800) {
                 var tower = creep.room.find(FIND_MY_STRUCTURES, {
@@ -43,13 +35,13 @@ var roleTransfer = {
                 }
             }
         }
-		else {
+        else {
             if(creep.room.energyCapacityAvailable > creep.room.energyAvailable) {
                 if(creep.room.storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.storage, {reusePath: 10});
                 }
             }
-	    }
-	}
+        }
+    }
 }
 module.exports = roleTransfer;

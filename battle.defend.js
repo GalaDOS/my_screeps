@@ -22,7 +22,7 @@ var battleDefend = {
         if(towers.length) {
             towers[0].attack(targets[0]);
         }  
-	}
+    }
 };
 
 module.exports = battleDefend;

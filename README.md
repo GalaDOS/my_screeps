@@ -20,3 +20,6 @@ Add basic function:
 ###V1.1.0
 * **New source distribution method**: RCL-4 will unlock the storage-structure, it allows me to use more effective source distribution method
 * **Add basic defend (Tower)**: since I harvest source from neighbor room, random invader npc will attack my creeps
+
+###V1.0.1
+* Adjust code structure.
