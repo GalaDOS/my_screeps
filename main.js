@@ -3,6 +3,7 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
 var roletransfer = require('role.transfer');
+var roleClaimer = require('role.claimer');
 var mainFunction = require('mainFunction');
 var battleDefend = require('battle.defend');
 
@@ -18,7 +19,7 @@ module.exports.loop = function () {
 
     /* maintain number of creeps */
     var creeps = _.filter(Game.creeps, (c) => true);
-    if(creeps.length < 13 || Game.rooms["E32S46"].memory.underAttack){
+    if(creeps.length < 11 || Game.rooms["E32S46"].memory.underAttack){
         mainFunction.maintainCreeps();
     }
 
@@ -42,6 +43,15 @@ module.exports.loop = function () {
         }
         else if(creep.memory.role == 'harvester_neighbor') {
             roleHarvester.run_neighbor(creep);
+        }
+        else if(creep.memory.role == 'claimer') {
+            roleClaimer.run(creep);
+        }
+        else if(creep.memory.role == 'upgrader_neighbor') {
+            roleUpgrader.run_neighbor(creep);
+        }
+        else if(creep.memory.role == 'builder_neighbor') {
+            roleBuilder.run_neighbor(creep);
         }
     }
 
