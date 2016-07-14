@@ -22,7 +22,7 @@ var roleRepairer = {
             else{
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.hits < 50000 && structure.structureType == STRUCTURE_WALL) || 
+                        return (structure.hits < 200000 && structure.structureType == STRUCTURE_WALL) || 
                                 (structure.hits < 500000 && structure.structureType == STRUCTURE_RAMPART);
                     }
                 });
@@ -69,7 +69,7 @@ var roleRepairer = {
                 else{
                     var targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.hits < 50000 && structure.structureType == STRUCTURE_WALL) || 
+                            return (structure.hits < 200000 && structure.structureType == STRUCTURE_WALL) || 
                                     (structure.hits < 500000 && structure.structureType == STRUCTURE_RAMPART);
                         }
                     });

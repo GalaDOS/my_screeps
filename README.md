@@ -27,3 +27,7 @@ Add basic function:
 ###V1.2.0
 * Claim a new room.
 * Upgrade and build without spawning in the new room.
+
+###V2.0.0
+* Multi room support.
+* Add constant.js to adjust creep number and type easier.

@@ -1,3 +1,4 @@
+var constant = require('constant');
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
@@ -8,7 +9,7 @@ var mainFunction = require('mainFunction');
 var battleDefend = require('battle.defend');
 
 module.exports.loop = function () {
-
+    //console.log(constant.creepsNum[constant.roomName[0]].transfer);
     /* delete dead creeps' memory */
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -18,9 +19,8 @@ module.exports.loop = function () {
     }
 
     /* maintain number of creeps */
-    var creeps = _.filter(Game.creeps, (c) => true);
-    if(creeps.length < 11 || Game.rooms["E32S46"].memory.underAttack){
-        mainFunction.maintainCreeps();
+    for(var name in Game.rooms) {
+        mainFunction.maintainCreeps(Game.rooms[name]);
     }
 
     /* run creeps' functions */

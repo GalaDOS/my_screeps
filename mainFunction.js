@@ -1,81 +1,78 @@
+var constant = require('constant');
+
 var mainFunction = {
     /*maintain number of creeps*/
-    maintainCreeps : function() {
-        var room = Game.spawns.Spawn1.room;
-        var creepType = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var harvesterType = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];        
-        var transferType = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE]; 
-        var claimerType = [CLAIM,MOVE]; 
-        var creepsNumIndex = room.memory.underAttack ? 1 : 0;
-        var creepsNum = [[1, 4, 2, 1, 1, 0, 1, 1], [1, 4, 1, 0, 1, 0, 0, 0]];//transfer, harvester, upgrader, builder, repairer, claimer
-        var transfer = _.filter(Game.creeps, (creep) => creep.memory.role == 'transfer');
-        if(transfer.length < creepsNum[creepsNumIndex][0]) {
+    maintainCreeps : function(room) {
+        var roomName = room.name;
+        var creepType = constant.creepType[roomName];
+        var creepsNum = constant.creepNum[roomName];
+        var spawn = Game.spawns[constant.spawns[roomName][0]];
+        var count = new constant.creepCounter();
+        for(var name in Game.creeps) {
+            var mem = Game.creeps[name].memory;
+            count[mem.room][mem.role] += 1;
+        }
+
+        
+        if(count[roomName].transfer < creepsNum.transfer) {
             if(room.energyAvailable >= 500) {
-                var newName = Game.spawns.Spawn1.createCreep(transferType, undefined, {role: 'transfer', working: false});
+                var newName = spawn.createCreep(creepType.transfer, undefined, {role: 'transfer', room: roomName, working: false});
             }
-            else
-            {
-                var newName = Game.spawns.Spawn1.createCreep([CARRY,CARRY,MOVE,MOVE], undefined, {role: 'transfer', working: false});
-            }
-            return;
-        }
-
-        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-        if(harvesters.length < creepsNum[creepsNumIndex][1]) {
-            if(room.energyAvailable >= 1000) {
-                if(room.memory.sourceNum == 0)
-                    var newName = Game.spawns.Spawn1.createCreep(harvesterType, undefined, {role: 'harvester', working: false, sourceNum: room.memory.sourceNum});
-                else
-                    var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'harvester', working: false, sourceNum: room.memory.sourceNum});
-                room.memory.sourceNum = room.memory.sourceNum == 0 ? 1 : 0;
-            }
-            else if(harvesters.length < 3 && room.energyAvailable >= 200) {//avoid starvation 
-                var newName = Game.spawns.Spawn1.createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester', working: false, sourceNum: room.memory.sourceNum});
-                room.memory.sourceNum = room.memory.sourceNum == 0 ? 1 : 0;
+            else {
+                var newName = spawn.createCreep([CARRY,CARRY,MOVE,MOVE], undefined, {role: 'transfer', room: roomName, working: false});
             }
             return;
         }
 
-        if(room.energyAvailable >= 800){
-            var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-            if(upgraders.length < creepsNum[creepsNumIndex][2]) {
-                var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'upgrader', working: false});
+        if(count[roomName].harvester < creepsNum.harvester) {
+            if(roomName == 'E32S46') {
+                if(room.energyAvailable >= creepType.threshold) {
+                    if(room.memory.sourceNum == 0)
+                        var newName = spawn.createCreep(creepType.harvester, undefined, {role: 'harvester', room: roomName, working: false, sourceNum: room.memory.sourceNum});
+                    else
+                        var newName = spawn.createCreep(creepType.universal, undefined, {role: 'harvester', room: roomName, working: false, sourceNum: room.memory.sourceNum});
+                    room.memory.sourceNum = room.memory.sourceNum == 0 ? 1 : 0;
+                }
+                else if(count[roomName].harvester < 3 && room.energyAvailable >= 200) {//avoid starvation 
+                    var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester', room: roomName, working: false, sourceNum: room.memory.sourceNum});
+                    room.memory.sourceNum = room.memory.sourceNum == 0 ? 1 : 0;
+                }
+            }
+            else {
+                var newName = spawn.createCreep(creepType.harvester, undefined, {role: 'harvester', room: roomName, working: false, sourceNum: 0});
+            }
+            return;
+        }
+
+        if(room.energyAvailable >= creepType.threshold) {
+            if(count[roomName].upgrader < creepsNum.upgrader) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'upgrader', room: roomName, working: false});
                 return;
             }
-            if(creepsNum[creepsNumIndex][3] > 0) {
-                var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-                if(builders.length < creepsNum[creepsNumIndex][3]) {
-                    var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'builder', working: false});
-                    return;
-                }
+
+            if(count[roomName].builder < creepsNum.builder) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'builder', room: roomName, working: false});
+                return;
             }
-            if(creepsNum[creepsNumIndex][4] > 0) {
-                var repairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-                if(repairer.length < creepsNum[creepsNumIndex][4]) {
-                    var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'repairer', working: false});
-                    return;
-                }
+
+            if(count[roomName].repairer < creepsNum.repairer) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'repairer', room: roomName, working: false});
+                return;
             }
-            if(creepsNum[creepsNumIndex][5] > 0) {
-                var claimer = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
-                if(claimer.length < creepsNum[creepsNumIndex][5]) {
-                    var newName = Game.spawns.Spawn1.createCreep(claimerType, undefined, {role: 'claimer'});
-                    return;
-                }
+
+            if(count[roomName].claimer < creepsNum.claimer) {
+                var newName = spawn.createCreep(creepType.claimer, undefined, {role: 'claimer', room: roomName});
+                return;
             }
-            if(creepsNum[creepsNumIndex][6] > 0) {
-                var claimer = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader_neighbor');
-                if(claimer.length < creepsNum[creepsNumIndex][6]) {
-                    var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'upgrader_neighbor'});
-                    return;
-                }
+
+            if(count[roomName].upgrader_neighbor < creepsNum.upgrader_neighbor) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'upgrader_neighbor', room: roomName});
+                return;
             }
-            if(creepsNum[creepsNumIndex][7] > 0) {
-                var claimer = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder_neighbor');
-                if(claimer.length < creepsNum[creepsNumIndex][7]) {
-                    var newName = Game.spawns.Spawn1.createCreep(creepType, undefined, {role: 'builder_neighbor'});
-                    return;
-                }
+
+            if(count[roomName].builder_neighborh < creepsNum.builder_neighbor) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'builder_neighbor', room: roomName});
+                return;
             }
         }
     }
