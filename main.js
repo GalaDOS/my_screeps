@@ -9,7 +9,6 @@ var mainFunction = require('mainFunction');
 var battleDefend = require('battle.defend');
 
 module.exports.loop = function () {
-    //console.log(constant.creepsNum[constant.roomName[0]].transfer);
     /* delete dead creeps' memory */
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -28,6 +27,9 @@ module.exports.loop = function () {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
             roleHarvester.run(creep);
+        }
+        else if(creep.memory.role == 'miner') {
+            roleHarvester.miner(creep);
         }
         else if(creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
@@ -56,5 +58,7 @@ module.exports.loop = function () {
     }
 
     /* protect room */
-    battleDefend.checkEnemy(Game.rooms["E32S46"]); 
+    for(var name in Game.rooms) {
+        battleDefend.checkEnemy(Game.rooms[name]); 
+    }
 }

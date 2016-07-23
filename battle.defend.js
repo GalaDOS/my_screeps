@@ -20,7 +20,9 @@ var battleDefend = {
             }
         );
         if(towers.length) {
-            towers[0].attack(targets[0]);
+            for(var i = 0; i<towers.length; i++) {
+                towers[i].attack(targets[0]);
+            }
         }  
     }
 };

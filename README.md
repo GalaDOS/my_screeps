@@ -31,3 +31,7 @@ Add basic function:
 ###V2.0.0
 * Multi room support.
 * Add constant.js to adjust creep number and type easier.
+
+###V2.0.1
+* Add miner.
+* Multiple towers.

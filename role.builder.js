@@ -23,7 +23,7 @@ var roleBuilder = {
             }
         }
         else {
-            if(creep.room.storage.store[RESOURCE_ENERGY] >= 700) {
+            if(creep.room.storage.store[RESOURCE_ENERGY] >= 800) {
                 if(creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.storage, {reusePath: 10});
                 }

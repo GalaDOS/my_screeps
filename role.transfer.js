@@ -36,7 +36,7 @@ var roleTransfer = {
             }
         }
         else {
-            if(creep.room.energyCapacityAvailable > creep.room.energyAvailable) {
+            if(creep.room.energyCapacityAvailable > creep.room.energyAvailable || creep.room.underAttack) {
                 if(creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.storage, {reusePath: 10});
                 }

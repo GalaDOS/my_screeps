@@ -12,7 +12,9 @@ var mainFunction = {
             var mem = Game.creeps[name].memory;
             count[mem.room][mem.role] += 1;
         }
-
+        
+        if(room.underAttack)
+            count[roomName].transfer -= 1;
         
         if(count[roomName].transfer < creepsNum.transfer) {
             if(room.energyAvailable >= 500) {
@@ -39,7 +41,12 @@ var mainFunction = {
                 }
             }
             else {
-                var newName = spawn.createCreep(creepType.harvester, undefined, {role: 'harvester', room: roomName, working: false, sourceNum: 0});
+                if(room.energyAvailable >= creepType.threshold) {
+                    var newName = spawn.createCreep(creepType.harvester, undefined, {role: 'harvester', room: roomName, working: false, sourceNum: 0});
+                }
+                else if(count[roomName].harvester < 1 && room.energyAvailable >= 200) {
+                    var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester', room: roomName, working: false, sourceNum: 0});
+                }
             }
             return;
         }
@@ -60,6 +67,11 @@ var mainFunction = {
                 return;
             }
 
+            if(count[roomName].miner < creepsNum.miner) {
+                var newName = spawn.createCreep(creepType.universal, undefined, {role: 'miner', room: roomName, working: false});
+                return;
+            }
+
             if(count[roomName].claimer < creepsNum.claimer) {
                 var newName = spawn.createCreep(creepType.claimer, undefined, {role: 'claimer', room: roomName});
                 return;
@@ -70,7 +82,7 @@ var mainFunction = {
                 return;
             }
 
-            if(count[roomName].builder_neighborh < creepsNum.builder_neighbor) {
+            if(count[roomName].builder_neighbor < creepsNum.builder_neighbor) {
                 var newName = spawn.createCreep(creepType.universal, undefined, {role: 'builder_neighbor', room: roomName});
                 return;
             }

@@ -73,6 +73,28 @@ var roleHarvester = {
                 }
             }
         }
+    },
+
+    miner: function(creep) {
+        /* decide working condition and source number */
+        if(creep.memory.working && creep.carry.K == undefined) {
+            creep.memory.working = false;
+        }
+        if(!creep.memory.working && creep.carry.K == creep.carryCapacity) {
+            creep.memory.working = true;
+        }
+
+        if(creep.memory.working) {
+            if(creep.transfer(creep.room.storage, RESOURCE_KEANIUM) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.storage, {reusePath: 15});
+            }
+        }
+        else {
+            var mine = creep.room.find(FIND_MINERALS);        
+            if(creep.harvest(mine[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(mine[0], {reusePath: 15});
+            }
+        }
     }
 };
 

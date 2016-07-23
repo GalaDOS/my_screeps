@@ -22,7 +22,7 @@ var roleRepairer = {
             else{
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.hits < 200000 && structure.structureType == STRUCTURE_WALL) || 
+                        return (structure.hits < 500000 && structure.structureType == STRUCTURE_WALL) || 
                                 (structure.hits < 500000 && structure.structureType == STRUCTURE_RAMPART);
                     }
                 });
@@ -34,7 +34,7 @@ var roleRepairer = {
             } 
         }
         else {
-            if(creep.room.storage.store[RESOURCE_ENERGY] >= 700) {
+            if(creep.room.storage.store[RESOURCE_ENERGY] >= 800) {
                 if(creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.storage, {reusePath: 10});
                 }
@@ -69,7 +69,7 @@ var roleRepairer = {
                 else{
                     var targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
-                            return (structure.hits < 200000 && structure.structureType == STRUCTURE_WALL) || 
+                            return (structure.hits < 250000 && structure.structureType == STRUCTURE_WALL) || 
                                     (structure.hits < 500000 && structure.structureType == STRUCTURE_RAMPART);
                         }
                     });

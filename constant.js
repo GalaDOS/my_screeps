@@ -8,43 +8,45 @@ var constant = {
 
     creepNum: {
         E32S46: {
-            transfer: 1,
+            transfer: 2,
             harvester: 4,
-            upgrader: 2,
+            miner: 0,
+            upgrader: 5,
             builder: 1,
             repairer: 1,
             claimer: 0,
-            builder_neighbor: 1,
-            upgrader_neighbor: 1,
-            total: 11
+            builder_neighbor: 0,
+            upgrader_neighbor: 0,
+            total: 13
         },
         E31S46: {
-            transfer: 0,
+            transfer: 1,
             harvester: 2,
-            upgrader: 0,
-            builder: 0,
+            miner: 0,
+            upgrader: 2,
+            builder: 1,
             repairer: 0,
             claimer: 0,
             builder_neighbor: 0,
             upgrader_neighbor: 0,
-            total: 2
+            total: 5
         }
     },
 
     creepType: {
         E32S46: {
-            transfer: [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
+            transfer: [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],
             harvester: [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
             claimer: [CLAIM,MOVE],
             universal: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],
             threshold: 1000
         },
         E31S46: {
-            transfer: [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
-            harvester: [WORK,CARRY,MOVE,MOVE],
+            transfer: [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
+            harvester: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
             claimer: [CLAIM,MOVE],
-            universal: [WORK,CARRY,MOVE,MOVE],
-            threshold: 250
+            universal: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],
+            threshold: 800
         }
     },
 
@@ -54,6 +56,7 @@ var constant = {
         for(var name in this) {
             this[name].transfer = 0;
             this[name].harvester = 0;
+            this[name].miner = 0;
             this[name].upgrader = 0;
             this[name].builder = 0;
             this[name].repairer = 0;
